@@ -183,6 +183,7 @@ describe("Suíte de testes do matcher 'ToThrowError'", function(){
         expect(function() { calcularDobro(0)}).toThrowError("O número deve ser maior que 0.");
         expect(function() { calcularDobro(0)}).toThrowError(/maior que 0/);
         expect(function() { calcularDobro(0)}).toThrowError(TypeError, "O número deve ser maior que 0.");
+        expect(function() { calcularDobro(0)}).toThrowError();
         expect(calcularDobro).not.toThrowError();
     });
 });
