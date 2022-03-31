@@ -179,11 +179,116 @@ describe("Suíte de testes do matcher 'ToThrowError'", function(){
         return numero * numero;
     };
     it("deve validar o uso do matcher 'toThrowError'", function(){
-        expect(function(){ calcularDobro(0)}).toThrowError();
+        expect(function() { calcularDobro(0)}).toThrowError();
         expect(function() { calcularDobro(0)}).toThrowError("O número deve ser maior que 0.");
         expect(function() { calcularDobro(0)}).toThrowError(/maior que 0/);
         expect(function() { calcularDobro(0)}).toThrowError(TypeError, "O número deve ser maior que 0.");
-        expect(function() { calcularDobro(0)}).toThrowError();
+        expect(function() { calcularDobro(0)}).toThrowError(TypeError);
         expect(calcularDobro).not.toThrowError();
+    });
+});
+
+//Falha Manual
+
+describe("Testa a função 'fail' de falha manual", function(){
+    var operacao = function(deveExecutar, callBack){
+        if (deveExecutar){
+            callBack();
+        }
+    };
+    it("não deve executar a função de callBack", function(){
+        operacao(false, function(){
+        fail("Função de callback foi executada");
+        });
+    });
+});
+
+//beforeEach
+
+describe("Suíte de testes do beforeEach", function(){
+    var contador = 0;
+    beforeEach(function(){
+        contador++;
+    });
+    it("deve exibir o contador com valor 1", function(){
+        expect(contador).toEqual(1);
+    });
+    it("deve exibir o contador com valor 2", function(){
+        expect(contador).toEqual(2);
+    });
+});
+
+//afterEach
+
+
+describe("Suíte de testes do afterEach", function(){
+    var contador = 0;
+    beforeEach(function(){
+        contador++;
+    });
+    afterEach(function(){
+        contador = 0;
+    });
+    it("deve exibir o contador com valor 1", function(){
+        expect(contador).toEqual(1);
+    });
+    it("deve continuar exibindo o contador com valor 1", function(){
+        expect(contador).toEqual(1);
+    });
+});
+
+//beforeALL
+
+describe("Suíte de testes do beforeALL", function(){
+    var contador;
+    beforeALL(function(){
+        contador = 10;
+    });
+    beforeEach(function(){
+        contador++;
+    });
+    it("deve exibir o contador com valor 11", function(){
+        expect(contador).toEqual(11);
+    });
+    it("deve exibir o contador com valor 12", function(){
+        expect(contador).toEqual(12);
+    });
+});
+
+//afterALL
+
+describe("Suíte de testes do alterALL", function(){
+    var contador;
+    beforeALL(function(){
+        contador = 10;
+    });
+    afterALL(function(){
+        contador = 0;
+    });
+    it("deve exibir o contador com valor 10", function(){
+        expect(contador).toEqual(10);
+    });
+    it("deve manter o contador com valor 10", function(){
+        expect(contador).toEqual(10);
+});
+});
+
+//Aninhando Suítes
+
+describe("Suíte de testes - Aninhando Suítes", function(){
+    var contadorExterno = 0;
+    beforeEach(function(){
+        contadorExterno++;
+    });
+    it("deve ter incrementado o contador externo para 1", function(){
+        expect("Suíte aninhando a anteior", function(){
+            var contadorInterno = 1;
+            beforeEach(function(){
+                contadorInterno++;
+            });
+            it("deve conter o valor '2' para ambos contadores", function(){
+                expect(contadorInterno).toEqual(contadorExterno);
+            });
+        });
     });
 });
